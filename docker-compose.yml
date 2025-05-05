@@ -1,0 +1,40 @@
+services:
+  mq:
+    image: rabbitmq:4.1.0-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  flower:
+    image: mher/flower:2.0
+    environment:
+      CELERY_BROKER_URL: "amqp://rabbitmq:rabbitmq@mq:5672//"
+      FLOWER_UNAUTHENTICATED_API: "true"
+    ports:
+      - 5555:5555
+    depends_on:
+      - mq
+
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.api
+    ports:
+      - 5000:5000
+    environment:
+      CELERY_BROKER_URL: "pyamqp://rabbitmq:rabbitmq@mq:5672//"
+    depends_on:
+      - mq
+
+  worker:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.worker
+    environment:
+      CELERY_BROKER_URL: "pyamqp://rabbitmq:rabbitmq@mq:5672//"
+    depends_on:
+      - mq

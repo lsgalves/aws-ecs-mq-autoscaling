@@ -1,0 +1,13 @@
+FROM python:3.13-slim
+
+RUN useradd --no-create-home -d /app worker
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install --no-cache-dir celery
+
+USER worker
+
+CMD ["celery", "-A", "worker.app", "worker", "--loglevel=info"]

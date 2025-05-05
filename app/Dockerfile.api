@@ -1,0 +1,18 @@
+FROM python:3.13-slim
+
+ENV FLASK_APP=api
+ENV FLASK_DEBUG=false
+
+RUN useradd --no-create-home -d /app api
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install --no-cache-dir Flask celery
+
+EXPOSE 5000
+
+USER api
+
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
