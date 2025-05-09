@@ -1,8 +1,9 @@
 import time
-from datetime import datetime
 
+from utils import get_broker_url
 from celery import shared_task
 
+get_broker_url()
 
 @shared_task
 def add(x, y):

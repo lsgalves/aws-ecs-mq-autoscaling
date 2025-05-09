@@ -1,13 +1,18 @@
-# AWS ECS + Autoscaling over Amazon MQ
+# AWS ECS Fargate + Autoscaling over Amazon MQ
+
+This project aims to show how to use AWS ECS with auto scaling based on the number of messages in an Amazon MQ queue.
+
+## Setup example project
 
 ```bash
 docker compose up -d --build
 
 # Testing
-for i in {1..5}; do
-  curl -X POST -H "Content-Type: application/json" -d "{\"x\": $i, \"y\": $(( i + 1 ))}" http://localhost:5000/add-task
+while :; do
+  curl -X POST 'http://localhost:5000/sum?x=5&y=7'
+  sleep 1
 done
 ```
 
-Flower: http://localhost:5555
-RabbitMQ Management: http://localhost:15672
+- Flower: http://localhost:5555
+- RabbitMQ Management: http://localhost:15672

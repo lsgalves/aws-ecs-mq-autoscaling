@@ -1,9 +1,8 @@
-import os
-
+from utils import get_broker_url
 from celery import Celery
 
 
-app = Celery('worker', broker=os.environ.get('CELERY_BROKER_URL', 'pyamqp://'), backend='rpc://')
+app = Celery('worker', broker=get_broker_url(), backend='rpc://')
 
 import tasks
 
