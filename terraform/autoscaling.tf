@@ -9,7 +9,7 @@ resource "aws_appautoscaling_target" "example_ecs_worker_autoscaling" {
 }
 
 resource "aws_appautoscaling_policy" "scale_up_autpscaling_policy" {
-  name               = "example-queue-high-scaling"
+  name               = "example-queue-up-scaling"
   policy_type        = "StepScaling"
   resource_id        = aws_appautoscaling_target.example_ecs_worker_autoscaling.resource_id
   scalable_dimension = aws_appautoscaling_target.example_ecs_worker_autoscaling.scalable_dimension
